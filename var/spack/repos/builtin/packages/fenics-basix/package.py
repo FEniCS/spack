@@ -2,8 +2,8 @@
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-
 from spack.package import *
+from spack.util.module_cmd import module
 
 
 class FenicsBasix(CMakePackage):
@@ -38,8 +38,17 @@ class FenicsBasix(CMakePackage):
     depends_on("xtensor@0.23.10:", when="@:0.4.2")
     depends_on("xtensor-blas@0.19.1:", when="@:0.3.0")
 
+
+
     @property
     def root_cmakelists_dir(self):
         if self.spec.satisfies("@0.4.0:"):
             return "cpp"
         return self.stage.source_path
+
+    def cmake_args(self):
+        args = []
+        if "platform=cray" in self.spec:
+            module("load", "craype-network-none")
+        return args
+
