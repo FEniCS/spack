@@ -48,7 +48,7 @@ class FenicsBasix(CMakePackage):
 
     def cmake_args(self):
         args = []
-        if "platform=cray" in self.spec and spec["blas"].name == "cray-libsci":
+        if "platform=cray" in self.spec and self.spec["blas"].name == "cray-libsci":
             module("load", "craype-network-none")
         return args
 
